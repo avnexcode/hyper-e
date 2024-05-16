@@ -23,7 +23,6 @@ export const insertFeature = async (newFeatureData) => {
         status: newFeatureData.status,
         level: newFeatureData.level,
     }
-    console.log(newFeatureData)
     const sql = `INSERT INTO features (username, title,started_time, status, level) VALUES (?, ?, ?, ?,?)`
 
     const values = [feature.username, feature.title, feature.started_time, feature.status, feature.level]
@@ -34,17 +33,19 @@ export const insertFeature = async (newFeatureData) => {
 }
 
 export const editFeature = async (featureData, id) => {
-    return
     const feature = {
         username: featureData.username,
         title: featureData.title,
+        started_time: featureData.started_time,
         end_time: featureData.end_time,
         status: featureData.status,
         level: featureData.level,
     }
-    const sql = `UPDATE features (username, title, end_time, status, level) VALUES (?, ?, ?, ?, ?) WHERE started_time NOT NULL AND id = ?`
+    // console.log(typeof id)
+    // return
+    const sql = `UPDATE features SET username = ?, title = ?, started_time = ?, end_time = ?, status = ?, level = ? WHERE started_time IS NOT NULL AND id = ?`;
 
-    const values = [feature.username, feature.title, feature.end_time, feature.status, feature.level]
+    const values = [feature.username, feature.title, feature.started_time, feature.end_time, feature.status, feature.level, id]
 
     const [result, fields] = await db.execute(sql, values)
 

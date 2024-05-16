@@ -2,7 +2,7 @@ import { getAllFeatures, getFeatureById, createFeature, updateFeature } from "..
 export const getFeaturesController = async (req, res) => {
     try {
         const features = await getAllFeatures()
-        res.status(200).json({ message: "Data Features" , features})
+        res.status(200).json({ message: "Data Features", features })
     } catch (error) {
         if (error) {
             res.status(400).send(error.message)
@@ -13,7 +13,7 @@ export const getFeaturesController = async (req, res) => {
 export const getFeatureDetailController = async (req, res) => {
     try {
         const features = await getFeatureById(parseInt(req.params.id))
-        res.status(200).json({ message: "Detail Feature" , features})
+        res.status(200).json({ message: "Detail Feature", features })
     } catch (error) {
         if (error) {
             res.status(400).send(error.message)
@@ -22,9 +22,10 @@ export const getFeatureDetailController = async (req, res) => {
 }
 
 export const postFeatureController = async (req, res) => {
+    const feature = await req.json()
     try {
-        await createFeature(await req.json())
-        res.send("Feature Added")
+        const result = await createFeature(feature)
+        res.status(200).json({ message: "Feature Added", feature, result })
     } catch (error) {
         if (error) {
             res.status(400).send(error.message)
@@ -33,8 +34,13 @@ export const postFeatureController = async (req, res) => {
 }
 
 export const putFeatureController = async (req, res) => {
+    const feature = await req.json()
+    if (!(feature.username && feature.title && feature.started_time && feature.end_time && feature.status && feature.level)) {
+        return res.status(500).json({ message: "Missing some fields" })
+    }
     try {
-        await updateFeature()
+        const result = await updateFeature(feature, req.params.id)
+        res.status(200).json({ message: "Feature Updateed", feature, result })
     } catch (error) {
         if (error) {
             res.status(400).send(error.message)

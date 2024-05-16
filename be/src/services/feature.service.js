@@ -14,14 +14,14 @@ export const getFeatureById = async (id) => {
 }
 
 export const createFeature = async (newFeatureData) => {
-    await insertFeature(newFeatureData)
+    return await insertFeature(newFeatureData)
 }
 
 export const deleteFeature = async (id) => {
     await getFeatureById(id)
-    await dropFeature(id)
+    return await dropFeature(id)
 }
 
 export const updateFeature = async (featureData, id) => {
-    await editFeature(featureData, id)
+    return await editFeature(featureData, id)
 }
